@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./user.css" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"
+      integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <body>
+    <div id="navbar">
+      <div id="user">
+        <img src="../assets/User-Icon.png" id="img" />
+      </div>
+
+      <div id="axiom">
+        <img src="../assets/axiom_main (1).png" id="axiom-img" />
+      </div>
+      <ul>
+        <li id="dashboard">Dashboard</li>
+        <a href="../project/project.html"><li>Project</li></a>
+      </ul>
+    </div>
+    <div id="container">
+      <div class="div">
+        <label>Project Name</label><input type="text" id="projectName" />
+      </div>
+      <div class="div">
+        <label>BaseMap</label>
+        <select name="" id="select">
+          <option value="">Choose</option>
+          <option value="arcgis-topographic">arcgis-topographic</option>
+          <option value="arcgis-light-gray">arcgis-light-gray</option>
+        </select>
+      </div>
+      <div class="div">
+        <button onclick="save()">Create</button>
+      </div>
+    </div>
+  </body>
+  <script src="./user.js"></script>
+</html>

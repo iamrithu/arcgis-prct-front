@@ -1,0 +1,93 @@
+body,
+html {
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 100vh;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+#navbar {
+  width: 100%;
+  height: 8vh;
+  margin: 0px;
+  padding: 0px;
+  border: 1px solid rgb(85, 82, 82);
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+#user {
+  width: 5%;
+  height: 100%;
+
+  position: absolute;
+  top: 0%;
+  left: 95%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#img {
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1px solid rgb(85, 82, 82);
+}
+#axiom {
+  width: 5%;
+  height: 100%;
+
+  position: relative;
+  left: 1%;
+  top: 0%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#axiom-img {
+  width: 100%;
+  height: 90%;
+}
+ul {
+  background-color: rgb(5, 15, 59);
+  width: 89%;
+  height: 100%;
+  justify-content: flex-end;
+  align-items: center;
+  display: flex;
+  margin-left: 1%;
+  padding: 0px;
+}
+li,
+a {
+  list-style: none;
+  padding: 5px;
+  height: 80%;
+  width: 10%;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+a {
+  text-decoration: none;
+  color: white;
+}
+ul > li:hover,
+#dashboard {
+  background-color: tomato;
+  cursor: pointer;
+}
+#container {
+  padding: 2%;
+  width: 100%;
+  height: 92vh;
+}
+.div {
+  padding: 1%;
+  margin: 1%;
+}
