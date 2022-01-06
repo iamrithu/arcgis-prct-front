@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (Email.value === info.eMail) {
           if (true) {
             localStorage.setItem("mail", Email.value);
-            window.location.href = "./screens/user/dashboard.html";
+            window.location.href = "./dashboard/dashboard.html";
           }
         } else {
         }
