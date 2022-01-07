@@ -369,3 +369,12 @@ select:focus {
   border-radius: 50%;
   background-color: crimson;
 }
+
+#user-details {
+  position: absolute;
+  top: 11%;
+  right: 0%;
+  background-color: blue;
+  width: 70px;
+  height: 100px;
+}

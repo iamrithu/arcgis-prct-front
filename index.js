@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   var password = document.getElementById("password");
   var Password = document.getElementById("l_password");
   var Email = document.getElementById("l_email");
+
   document.querySelector("#register_button").addEventListener("click", (e) => {
     e.preventDefault();
 
@@ -39,17 +40,22 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#login_button").addEventListener("click", (e) => {
     e.preventDefault();
     axios.get("http://localhost:8000/user/register").then((res) => {
-      res.data.map((info, index) => {
-        console.log(Email.value);
+      var data = res.data;
 
-        if (Email.value === info.eMail) {
-          if (true) {
-            localStorage.setItem("mail", Email.value);
-            window.location.href = "./dashboard/dashboard.html";
-          }
-        } else {
+      for (var i = 0; i < data.length; i++) {
+        if (
+          Email.value === data[i].eMail &&
+          Password.value === data[i].password
+        ) {
+          localStorage.setItem("mail", Email.value);
+          document.getElementById("l_email").value = "";
+          document.getElementById("l_password").value = "";
+          document.getElementById("l_email").style.border = "1px solid green";
+          document.getElementById("l_password").style.border =
+            "1px solid green";
+          window.location.href = "./dashboard/dashboard.html";
         }
-      });
+      }
     });
   });
 });
