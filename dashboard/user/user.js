@@ -4,34 +4,39 @@ var baseMap = document.getElementById("select");
 
 axios.get("http://localhost:8080/user/project/" + userId).then((res) => {
   var data = res.data;
-  document.getElementById("div1").innerHTML = data.map((info) => {
-    return `  <div id="container">     <div id="project-details">       <div id="details">         <p class="p-name">Project-Name</p> <p>
-      : 
-     ${info.projectName}
-      </p>       </div>       <div id="details">         <p class="p-name">Project-ID </p>         <p class="project-id">
-      : 
-    ${info._id}
-      </p>       </div>       <div id="details"> <p class="p-name">Base-Map </p> <p>  
-      : 
-     ${info.baseMap}
-      </p> </div></div><div id="functions"><div id="edit">
-      <button  class ="clcbtn" value="${info._id}" onclick="edit(this.value)"> <i class="fas fa-pencil-alt"></i></button>
-      <button   class="clcbtn"value="${info._id}" onclick="del(this.value)"><i class="fas fa-trash-alt"></i></button>
-      </div>
-      <input
-      type="button"
-      name="${info.baseMap}"
-      onclick="Send(this.name)"
-      class="btn"
-      value="Open"
-    /></div> </div>`;
-  });
+  document.getElementById("table").innerHTML =
+    `<tr>
+  <th style="width: 25%">Title</th>
+  <th style="width: 25%">Base map</th>
+  <th style="width: 25%">Location</th>
+  <th style="width: 25%">Action</th>
+</tr>` +
+    data
+      .map((info) => {
+        return ` <tr>
+    <td>${info.projectName}</td>
+    <td>${info.baseMap}</td>
+    <td>${info.state}</td>
+    <td>
+      <button value="${info._id}" onclick="del(this.value)">
+        <i class="far fa-trash-alt" id="trash" title="Remove"></i>
+      </button>
+      <button value="${info._id}" onclick="edit(this.value)  ">
+        <i class="far fa-edit" id="edit" title="Edit"></i>
+      </button>
+      <button value="${info._id}" onclick="Send(this.value) ">
+        <i class="fas fa-external-link-alt" id="move"  title="GO"></i>
+      </button>
+    </td>
+    </tr>`;
+      })
+      .join(" ");
 });
 
 function Send(x) {
-  localStorage.setItem("map", x);
+  localStorage.setItem("project_id", x);
 
-  window.location.href = "../map/basemap.html";
+  window.location.href = "../map/map.html";
 }
 
 function cross() {
@@ -41,13 +46,14 @@ function cross() {
   document.getElementById("carryBox").style.animationName = "myNew";
 }
 function edit(x) {
-  localStorage.setItem("projectID", x);
-  axios.get("http://localhost:8080/user/project/details/" + x).then((res) => {
-    res.data.map((info) => {
-      projectName.value = info.projectName;
-      baseMap.value = info.baseMap;
-    });
-  });
+  alert(x);
+  // localStorage.setItem("projectID", x);
+  // axios.get("http://localhost:8080/user/project/details/" + x).then((res) => {
+  //   res.data.map((info) => {
+  //     projectName.value = info.projectName;
+  //     baseMap.value = info.baseMap;
+  //   });
+  // });
   document.getElementById("project").style.display = "flex";
   document.getElementById("carryBox").style.animationName = "carry";
 }
@@ -95,4 +101,4 @@ function del(x) {
   });
 }
 
-// <iframe id="preview" src="../map/basemap.html"> hi</iframe>
+// // <iframe id="preview" src="../map/basemap.html"> hi</iframe>

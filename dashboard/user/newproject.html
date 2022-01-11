@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./dashboard.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+      integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"
+      integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <style>
+      body,
+      html {
+        margin: 0px;
+        padding: 0px;
+        position: relative;
+      }
+      #project {
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        transition: 0.4s;
+        background-color: rgba(4, 5, 5, 0.678);
+        z-index: 2;
+      }
+      #carryBox {
+        position: relative;
+        margin-top: 2%;
+        padding: 0px;
+        width: 30%;
+        min-height: 40%;
+        box-sizing: border-box;
+        top: 0px;
+        font-weight: 400;
+        font-family: "Montserrat", sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        background-color: rgb(255, 255, 255);
+        border-radius: 10px;
+        box-shadow: 10px 10px 100px black;
+        animation: carry 0.3s 1;
+      }
+      @keyframes carry {
+        0% {
+          transform: scale(0.3, 0.3);
+        }
+
+        100% {
+          transform: scale(1, 1);
+        }
+      }
+      @keyframes myNew {
+        0% {
+          transform: scale(1, 1);
+        }
+
+        100% {
+          transform: scale(0, 0);
+        }
+      }
+
+      label {
+        font-size: 13px;
+        font-weight: bolder;
+        margin-top: 2%;
+        margin-bottom: 2%;
+      }
+      .box {
+        display: flex;
+        flex-direction: column;
+        padding-left: 5%;
+        width: 80%;
+      }
+      input {
+        outline: 0;
+        border-width: 0 0 2px;
+        border-color: rgba(54, 54, 59, 0.658);
+        height: 20px;
+        margin-bottom: 2%;
+      }
+
+      select {
+        font-size: 13px;
+        height: 25px;
+        border-width: 0px;
+      }
+      select:focus {
+        outline: none;
+      }
+      #heading {
+        font-size: 17px;
+        margin: 5%;
+        color: rgb(121, 156, 156);
+      }
+      #btn {
+        padding: 1%;
+        width: 20%;
+        margin: 5%;
+        font-weight: 400;
+        font-family: "Montserrat", sans-serif;
+        background-color: rgb(18, 49, 116);
+        border-width: 0px;
+        border-radius: 4px;
+        color: white;
+        font-weight: bolder;
+      }
+      #cross {
+        font-size: 20px;
+        color: rgb(107, 3, 3);
+        position: absolute;
+        height: 30px;
+        width: 30px;
+
+        top: -2%;
+        right: -2%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #cross:hover {
+        color: crimson;
+      }
+
+      #bell {
+        animation: ring 4s 0.7s ease-in-out infinite;
+        transform-origin: 50% 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="project">
+      <div id="carryBox">
+        <div id="cross">
+          <i class="fas fa-times-circle" onclick="cross()"></i>
+        </div>
+
+        <text id="heading">Create A New Project</text>
+        <div class="box">
+          <label>Project Name</label>
+          <input id="project_name" type="text" placeholder="Project Neme" />
+        </div>
+        <div class="box">
+          <label> Base Map</label>
+          <select id="select">
+            <option value="">Choose Map</option>
+            <option value="arcgis-topographic">ArcGIS-Topograohic</option>
+            <option value="arcgis-imagery">ArcGIS-imagery</option>
+            <option value="topo-vector">Topo-vector</option>
+            <option value="streets-navigation-vector">Navigation</option>
+          </select>
+        </div>
+        <div class="box">
+          <label> State</label>
+          <select id="select2">
+            <option value="">Choose State</option>
+            <option value="-114.42864,55.34352">Alberta</option>
+            <option value="-125.414973,54.941664">British Columbia</option>
+            <option value="-97.246028,55.293510">Manitoba</option>
+            <option value="-66.121842,46.694596">New Brunswick</option>
+            <option value="-56.186768,52.001769">
+              Newfoundland and Labrador
+            </option>
+            <option value="-119.262418,63.88933">Northwest Territories</option>
+            <option value="-61.656549,45.737405">Nova Scotia</option>
+            <option value="-88.487826,69.579383">Nunavut</option>
+            <option value="-84.668026,50.882778">Ontario</option>
+            <option value="-63.386057,46,496338">Prince Edward Island</option>
+            <option value="-71.346329,46.844932">Quebec</option>
+            <option value="-106.430598,54.825253">Saskatchewan</option>
+            <option value="-135,528700,63.607907">Yukon</option>
+          </select>
+        </div>
+        <button id="btn" onclick="send()">Create</button>
+      </div>
+    </div>
+  </body>
+  <script>
+    var projectName = document.querySelector("#project_name");
+    var baseMap = document.querySelector("#select");
+    var state = document.querySelector("#select2");
+    function cross() {
+      setTimeout(() => {
+        document.getElementById("project").style.display = "none";
+      }, 300);
+      document.getElementById("carryBox").style.animationName = "myNew";
+      window.location.href = "../../index.html";
+    }
+    //
+
+    function send() {
+      console.log(state.innerText);
+
+      if (projectName.value != "" && baseMap.value != "" && state.value != "") {
+        axios
+          .get(
+            "http://localhost:8080/user/register/" +
+              localStorage.getItem("user-mail")
+          )
+          .then((res) => {
+            var data = {
+              userId: res.data._id,
+              projectName: projectName.value,
+              baseMap: baseMap.value,
+              state: state.value,
+            };
+            axios
+              .post("http://localhost:8080/user/project", data)
+              .then((res) => {
+                localStorage.setItem("id", res.data.userId);
+                projectName.value = "";
+                baseMap.value = "";
+
+                setTimeout(() => {
+                  document.getElementById("project").style.display = "none";
+                }, 250);
+              });
+          });
+        document.getElementById("carryBox").style.animationName = "myNew";
+      } else {
+        alert("fill the values");
+      }
+    }
+  </script>
+</html>

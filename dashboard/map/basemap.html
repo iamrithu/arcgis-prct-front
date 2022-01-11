@@ -6,7 +6,17 @@
       content="initial-scale=1, maximum-scale=1, user-scalable=no"
     />
     <title>ArcGIS API for JavaScript Tutorials: Display a map</title>
-
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"
+      integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.22/esri/themes/light/main.css"
+    />
+    <script src="https://js.arcgis.com/4.22/"></script>
     <style>
       html,
       body,
@@ -18,32 +28,32 @@
       }
     </style>
 
-    <link
-      rel="stylesheet"
-      href="https://js.arcgis.com/4.22/esri/themes/light/main.css"
-    />
-    <script src="https://js.arcgis.com/4.22/"></script>
-
     <script>
-      var MAP = localStorage.getItem("map");
-      require(["esri/config", "esri/Map", "esri/views/MapView"], function (
-        esriConfig,
-        Map,
-        MapView
-      ) {
-        esriConfig.apiKey =
-          "AAPK98c50a3510cc4cb9a07dc3116113843cqZssDSqHkgmBfOp_v5GIAETd4ggp7oleJJQPSyr9NmmTf-2GSs7swp9zS6T42ny7";
-        const map = new Map({
-          basemap: MAP, // Basemap layer service
+      axiom
+        .get("http://localhost:8080/user/project/details/" + id)
+        .then((res) => {
+          console.log(res);
         });
+      var id = localStorage.getItem("project_id");
 
-        const view = new MapView({
-          map: map,
-          center: [-118.805, 34.027], // Longitude, latitude
-          zoom: 13, // Zoom level
-          container: "viewDiv", // Div element
-        });
-      });
+      // require(["esri/config", "esri/Map", "esri/views/MapView"], function (
+      //   esriConfig,
+      //   Map,
+      //   MapView
+      // ) {
+      //   esriConfig.apiKey =
+      //     "AAPK98c50a3510cc4cb9a07dc3116113843cqZssDSqHkgmBfOp_v5GIAETd4ggp7oleJJQPSyr9NmmTf-2GSs7swp9zS6T42ny7";
+      //   const map = new Map({
+      //     basemap: MAP, // Basemap layer service
+      //   });
+
+      //   const view = new MapView({
+      //     map: map,
+      //     center: [-118.805, 34.027], // Longitude, latitude
+      //     zoom: 13, // Zoom level
+      //     container: "viewDiv", // Div element
+      //   });
+      // });
     </script>
   </head>
   <body>

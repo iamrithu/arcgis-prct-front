@@ -21,31 +21,21 @@
   </head>
 
   <body>
-    <div id="div1"></div>
-    <div id="project">
-      <div id="carryBox">
-        <div id="cross1">
-          <i class="fas fa-times-circle" id="fas" onclick="cross()"></i>
-        </div>
-
-        <text id="heading">Edit Project</text>
-        <div class="box">
-          <label>Project Name</label>
-          <input id="project_name" type="text" placeholder="Project Name" />
-        </div>
-        <div class="box">
-          <label> Base Map</label>
-          <select id="select">
-            <option value="">Choose Map</option>
-            <option value="arcgis-topographic">ArcGIS-Topograohic</option>
-            <option value="arcgis-imagery">ArcGIS-imagery</option>
-            <option value="topo-vector">Topo-vector</option>
-            <option value="streets-navigation-vector">Navigation</option>
-          </select>
-        </div>
-        <button id="btn" onclick="send()">Create</button>
-      </div>
+    <div id="project_nav">
+      <h3>Projects</h3>
+      <a href="./newproject.html" target="_blank">
+        <button id="btn" onclick="create()">
+          Create <i class="fas fa-long-arrow-alt-right"></i></button
+      ></a>
     </div>
+    <table id="table">
+      <tr>
+        <th style="width: 25%">Title</th>
+        <th style="width: 25%">Base map</th>
+        <th style="width: 25%">Location</th>
+        <th style="width: 25%">Action</th>
+      </tr>
+    </table>
   </body>
   <script src="./user.js"></script>
 </html>

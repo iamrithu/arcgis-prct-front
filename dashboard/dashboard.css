@@ -195,122 +195,6 @@ h3 {
   width: 100%;
   height: 100%;
 }
-#project {
-  margin: 0px;
-  padding: 0px;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0px;
-  display: none;
-  justify-content: center;
-  align-items: flex-start;
-  transition: 0.4s;
-  background-color: rgba(4, 5, 5, 0.678);
-  z-index: 2;
-}
-#carryBox {
-  position: relative;
-  margin-top: 2%;
-  padding: 0px;
-  width: 30%;
-  min-height: 40%;
-  box-sizing: border-box;
-  top: 0px;
-  font-weight: 400;
-  font-family: "Montserrat", sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  background-color: rgb(255, 255, 255);
-  border-radius: 10px;
-  box-shadow: 10px 10px 100px black;
-  animation: carry 0.3s 1;
-}
-@keyframes carry {
-  0% {
-    transform: scale(0.3, 0.3);
-  }
-
-  100% {
-    transform: scale(1, 1);
-  }
-}
-@keyframes myNew {
-  0% {
-    transform: scale(1, 1);
-  }
-
-  100% {
-    transform: scale(0, 0);
-  }
-}
-
-label {
-  font-size: 13px;
-  margin-bottom: 5%;
-}
-.box {
-  display: flex;
-  flex-direction: column;
-  padding-left: 5%;
-  width: 80%;
-}
-input {
-  outline: 0;
-  border-width: 0 0 2px;
-  border-color: rgba(54, 54, 59, 0.658);
-  height: 20px;
-  margin-bottom: 5%;
-}
-
-select {
-  font-size: 13px;
-  height: 25px;
-  border-width: 0px;
-}
-select:focus {
-  outline: none;
-}
-#heading {
-  font-size: 17px;
-  margin: 5%;
-  color: rgb(121, 156, 156);
-}
-#btn {
-  padding: 1%;
-  width: 20%;
-  margin: 5%;
-  font-weight: 400;
-  font-family: "Montserrat", sans-serif;
-  background-color: rgb(18, 49, 116);
-  border-width: 0px;
-  border-radius: 4px;
-  color: white;
-  font-weight: bolder;
-}
-#cross {
-  font-size: 20px;
-  color: rgb(107, 3, 3);
-  position: absolute;
-  height: 30px;
-  width: 30px;
-
-  top: -2%;
-  right: -2%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-#cross:hover {
-  color: crimson;
-}
-
-#bell {
-  animation: ring 4s 0.7s ease-in-out infinite;
-  transform-origin: 50% 4px;
-}
 
 @keyframes ring {
   0% {
@@ -401,7 +285,7 @@ select:focus {
   position: absolute;
   top: 11%;
   right: 0%;
-
+  z-index: -1;
   width: 15%;
   height: 50%;
   font-weight: 600;

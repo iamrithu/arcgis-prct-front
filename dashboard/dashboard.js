@@ -10,6 +10,7 @@ var nav_name = document.querySelectorAll(".nav-name");
 var nav_icon = document.querySelectorAll(".nav-icon");
 var projectName = document.querySelector("#project_name");
 var baseMap = document.querySelector("#select");
+var state = document.querySelector("#select2");
 
 var useName = document.getElementById("userName");
 
@@ -23,7 +24,6 @@ axios
       lastName: res.data.lastName,
       userId: res.data._id,
     };
-    console.log(data);
 
     localStorage.setItem("user-id", data.userId);
 
@@ -121,42 +121,7 @@ function project() {
   document.getElementById("project").style.display = "flex";
   document.getElementById("carryBox").style.animationName = "carry";
 }
-function cross() {
-  setTimeout(() => {
-    document.getElementById("project").style.display = "none";
-  }, 300);
-  document.getElementById("carryBox").style.animationName = "myNew";
-}
-//
 
-function send() {
-  if (projectName.value != "" && baseMap.value != "") {
-    axios
-      .get(
-        "http://localhost:8080/user/register/" +
-          localStorage.getItem("user-mail")
-      )
-      .then((res) => {
-        var data = {
-          userId: res.data._id,
-          projectName: projectName.value,
-          baseMap: baseMap.value,
-        };
-        axios.post("http://localhost:8080/user/project", data).then((res) => {
-          localStorage.setItem("id", res.data.userId);
-          projectName.value = "";
-          baseMap.value = "";
-
-          setTimeout(() => {
-            document.getElementById("project").style.display = "none";
-          }, 250);
-        });
-      });
-    document.getElementById("carryBox").style.animationName = "myNew";
-  } else {
-    alert("fill the values");
-  }
-}
 var value = true;
 var card = document.getElementById("card");
 function flip() {

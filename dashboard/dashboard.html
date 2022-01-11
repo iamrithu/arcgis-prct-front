@@ -39,7 +39,7 @@
         <div id="nav-user">
           <div id="nav-setting">
             <div class="nav-setting-icon">
-              <i class="far fa-plus-square" onclick="project()"></i>
+              <i class="far fa-plus-square"></i>
             </div>
             <div class="nav-setting-icon">
               <i class="fas fa-bell" id="bell">
@@ -76,7 +76,7 @@
           </div>
         </div>
 
-        <div class="nav-list">
+        <!-- <div class="nav-list">
           <div class="nav-icon">
             <i class="fas fa-users"></i>
           </div>
@@ -135,16 +135,16 @@
           <div class="nav-name">
             <p>Knowledgebase</p>
           </div>
-        </div>
+        </div> -->
 
-        <div class="nav-list">
+        <!-- <div class="nav-list">
           <div class="nav-icon">
             <i class="fas fa-sliders-h"></i>
           </div>
           <div class="nav-name">
             <p>Others</p>
           </div>
-        </div>
+        </div> -->
       </div>
       <div id="container">
         <iframe
@@ -154,30 +154,7 @@
         ></iframe>
       </div>
     </div>
-    <div id="project">
-      <div id="carryBox">
-        <div id="cross">
-          <i class="fas fa-times-circle" onclick="cross()"></i>
-        </div>
 
-        <text id="heading">Create A New Project</text>
-        <div class="box">
-          <label>Project Name</label>
-          <input id="project_name" type="text" placeholder="Project Neme" />
-        </div>
-        <div class="box">
-          <label> Base Map</label>
-          <select id="select">
-            <option value="">Choose Map</option>
-            <option value="arcgis-topographic">ArcGIS-Topograohic</option>
-            <option value="arcgis-imagery">ArcGIS-imagery</option>
-            <option value="topo-vector">Topo-vector</option>
-            <option value="streets-navigation-vector">Navigation</option>
-          </select>
-        </div>
-        <button id="btn" onclick="send()">Create</button>
-      </div>
-    </div>
     <div id="user-details">
       <div id="card">
         <div class="back">
