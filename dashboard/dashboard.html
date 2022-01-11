@@ -33,8 +33,8 @@
         <img src="../assets/download.png" id="image" />
       </div>
       <div id="nav">
-        <div class="menu" id="Menu" onclick="save()">
-          <i class="fas fa-bars"> </i>
+        <div class="menu">
+          <i class="fas fa-bars" id="Menu" onclick="save()"> </i>
         </div>
         <div id="nav-user">
           <div id="nav-setting">
@@ -51,7 +51,7 @@
             </div>
           </div>
           <div id="user-icon">
-            <img src="../assets/images.png" id="image2" />
+            <img src="../assets/images.png" id="image2" onclick="flip()" />
           </div>
         </div>
       </div>
@@ -176,6 +176,16 @@
           </select>
         </div>
         <button id="btn" onclick="send()">Create</button>
+      </div>
+    </div>
+    <div id="user-details">
+      <div id="card">
+        <div class="back">
+          <div id="container-icon">
+            <img src="" alt="" />
+          </div>
+          <p id="userName">rithi</p>
+        </div>
       </div>
     </div>
   </body>

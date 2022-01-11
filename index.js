@@ -23,39 +23,79 @@ document.addEventListener("DOMContentLoaded", () => {
   var Password = document.getElementById("l_password");
   var Email = document.getElementById("l_email");
 
-  document.querySelector("#register_button").addEventListener("click", (e) => {
-    e.preventDefault();
+  document
+    .querySelector("#register_button")
+    .addEventListener("click", async (e) => {
+      e.preventDefault();
 
-    var data = {
-      firstName: firstName.value,
-      lastName: lastName.value,
-      eMail: eMail.value,
-      password: password.value,
-    };
-    axios.post("http://localhost:8000/user/register", data).then((res) => {
-      console.log("success");
-    });
-  });
-
-  document.querySelector("#login_button").addEventListener("click", (e) => {
-    e.preventDefault();
-    axios.get("http://localhost:8000/user/register").then((res) => {
-      var data = res.data;
-
-      for (var i = 0; i < data.length; i++) {
+      var data = {
+        firstName: firstName.value,
+        lastName: lastName.value,
+        email: eMail.value,
+        password: password.value,
+      };
+      try {
+        const { data: res } = await axios.post(
+          "http://localhost:8080/api/users",
+          data
+        );
+        localStorage.setItem("token", res.data);
+        console.log(res.message);
+      } catch (error) {
         if (
-          Email.value === data[i].eMail &&
-          Password.value === data[i].password
+          error.response &&
+          error.response.status >= 400 &&
+          error.response.status <= 500
         ) {
-          localStorage.setItem("mail", Email.value);
-          document.getElementById("l_email").value = "";
-          document.getElementById("l_password").value = "";
-          document.getElementById("l_email").style.border = "1px solid green";
-          document.getElementById("l_password").style.border =
-            "1px solid green";
-          window.location.href = "./dashboard/dashboard.html";
+          alert(error.response.data.message);
+          document.getElementById("message2").innerText =
+            error.response.data.message;
+          setInterval(() => {
+            document.getElementById("message2").innerText = "";
+          }, 2000);
+          console.log(error.response.data.message);
         }
       }
     });
-  });
+
+  var value = false;
+  document
+    .querySelector("#login_button")
+    .addEventListener("click", async (e) => {
+      e.preventDefault();
+
+      localStorage.setItem("user-mail", Email.value);
+
+      var data = {
+        email: Email.value,
+        password: Password.value,
+      };
+      try {
+        const { data: res } = await axios.post(
+          "http://localhost:8080/api/auth",
+          data
+        );
+        value = true;
+        window.location.href = "./dashboard/dashboard.html";
+      } catch (error) {
+        if (
+          error.response &&
+          error.response.status >= 400 &&
+          error.response.status <= 500
+        ) {
+          alert(error.response.data.message);
+          document.getElementById("message").innerText =
+            error.response.data.message;
+          setInterval(() => {
+            document.getElementById("message").innerText = "";
+          }, 2000);
+          console.log(error.response.data.message);
+        }
+      }
+      if (value === true) {
+        localStorage.setItem("mail", Email.value);
+        console.log(localStorage.getItem("mail"));
+      } else {
+      }
+    });
 });

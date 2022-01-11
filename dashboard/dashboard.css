@@ -52,6 +52,10 @@ body {
   align-items: center;
   justify-content: center;
 }
+#Menu {
+  position: relative;
+  z-index: 2;
+}
 #nav-user {
   width: 80%;
   height: 100%;
@@ -104,6 +108,8 @@ body {
   height: 100%;
   border-right: 0.5px solid rgba(128, 128, 128, 0.274);
   transition: 0.2s;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 .active {
   border-left: 3px solid rgb(90, 191, 238);
@@ -111,7 +117,7 @@ body {
 
 .nav-list {
   width: 100%;
-  height: 8%;
+  height: 10%;
   position: relative;
   display: flex;
   align-items: center;
@@ -139,6 +145,7 @@ body {
 .nav-setting-icon:hover {
   color: rgb(90, 191, 238);
 }
+
 .nav-list:hover {
   background-color: rgba(194, 180, 180, 0.26);
 }
@@ -219,7 +226,27 @@ h3 {
   background-color: rgb(255, 255, 255);
   border-radius: 10px;
   box-shadow: 10px 10px 100px black;
+  animation: carry 0.3s 1;
 }
+@keyframes carry {
+  0% {
+    transform: scale(0.3, 0.3);
+  }
+
+  100% {
+    transform: scale(1, 1);
+  }
+}
+@keyframes myNew {
+  0% {
+    transform: scale(1, 1);
+  }
+
+  100% {
+    transform: scale(0, 0);
+  }
+}
+
 label {
   font-size: 13px;
   margin-bottom: 5%;
@@ -374,7 +401,38 @@ select:focus {
   position: absolute;
   top: 11%;
   right: 0%;
-  background-color: blue;
-  width: 70px;
-  height: 100px;
+
+  width: 15%;
+  height: 50%;
+  font-weight: 600;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  border-radius: 4px;
+}
+#card {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform-style: preserve-3d;
+  transition: transform 0.3s;
+  transform: rotateY(0deg);
+  font-weight: 600;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+}
+
+#card .back {
+  background: rgba(233, 224, 224, 0.788);
+  transform: rotateY(180deg);
+  margin: 0;
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  font-weight: 600;
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+  box-shadow: -4px 4px 30px rgba(56, 53, 53, 0.418);
+  border-radius: 4px;
 }

@@ -5,6 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+      integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm"
+      crossorigin="anonymous"
+    />
     <link rel="stylesheet" href="./user.css" />
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"
@@ -13,21 +19,31 @@
       referrerpolicy="no-referrer"
     ></script>
   </head>
+
   <body>
-    <div id="test">
-      <button onclick="one()">click</button>
-    </div>
-    <div id="container">
-      <div class="div">
-        <label>Project Name</label><input type="text" id="projectName" />
-      </div>
-      <div class="div">
-        <label>BaseMap</label>
-        <select name="" id="select">
-          <option value="">Choose</option>
-          <option value="arcgis-topographic">arcgis-topographic</option>
-          <option value="arcgis-light-gray">arcgis-light-gray</option>
-        </select>
+    <div id="div1"></div>
+    <div id="project">
+      <div id="carryBox">
+        <div id="cross1">
+          <i class="fas fa-times-circle" id="fas" onclick="cross()"></i>
+        </div>
+
+        <text id="heading">Edit Project</text>
+        <div class="box">
+          <label>Project Name</label>
+          <input id="project_name" type="text" placeholder="Project Name" />
+        </div>
+        <div class="box">
+          <label> Base Map</label>
+          <select id="select">
+            <option value="">Choose Map</option>
+            <option value="arcgis-topographic">ArcGIS-Topograohic</option>
+            <option value="arcgis-imagery">ArcGIS-imagery</option>
+            <option value="topo-vector">Topo-vector</option>
+            <option value="streets-navigation-vector">Navigation</option>
+          </select>
+        </div>
+        <button id="btn" onclick="send()">Create</button>
       </div>
     </div>
   </body>
