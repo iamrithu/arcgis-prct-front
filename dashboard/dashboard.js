@@ -1,3 +1,15 @@
+//
+
+function preventBack() {
+  window.history.forward();
+}
+setTimeout("preventBack()", 0);
+window.onunload = function () {
+  null;
+};
+
+//
+
 var width = true;
 var ifram = document.getElementById("ifm");
 var img = document.getElementById("image");
@@ -15,9 +27,7 @@ var state = document.querySelector("#select2");
 var useName = document.getElementById("userName");
 
 axios
-  .get(
-    "http://localhost:8080/user/register/" + localStorage.getItem("user-mail")
-  )
+  .get("http://localhost:8080/api/user/" + localStorage.getItem("user-mail"))
   .then((res) => {
     var data = {
       firstName: res.data.firstName,
@@ -76,6 +86,7 @@ function save() {
     for (var i = 0; i < nav_name.length; i++) {
       nav_name[i].style.display = "none";
       nav_icon[i].style.width = "100%";
+      nav_list[i].setAttribute("title", nav_name[i].innerText);
     }
   } else {
     width = true;
@@ -89,6 +100,7 @@ function save() {
       nav_name[i].style.display = "flex";
 
       nav_icon[i].style.width = "32%";
+      nav_list[i].removeAttribute("title");
     }
   }
 }
@@ -150,3 +162,14 @@ document.querySelector(".dashboard").addEventListener("click", () => {
 document.querySelector(".project").addEventListener("click", () => {
   ifram.setAttribute("src", "./user/project.html");
 });
+
+function logOut() {
+  localStorage.clear();
+  window.location.href = "../index.html";
+}
+
+// var myObj = [{name:"test", time:"Date 2017-02-03T08:38:04.449Z"}];
+// localStorage.setItem('item', JSON.stringify(myObj));
+// Then when you want to retrieve data , you need to parse the String to Object again.
+
+// var getObj = JSON.parse(localStorage.getItem('item'));

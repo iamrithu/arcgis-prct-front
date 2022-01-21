@@ -196,6 +196,11 @@ h3 {
   height: 100%;
 }
 
+#bell {
+  animation: ring 4s 0.7s ease-in-out infinite;
+  transform-origin: 50% 4px;
+}
+
 @keyframes ring {
   0% {
     transform: rotate(0);
@@ -280,7 +285,6 @@ h3 {
   border-radius: 50%;
   background-color: crimson;
 }
-
 #user-details {
   position: absolute;
   top: 11%;

@@ -114,7 +114,7 @@
       #heading {
         font-size: 17px;
         margin: 5%;
-        color: rgb(121, 156, 156);
+        color: rgb(156, 73, 109);
       }
       #btn {
         padding: 1%;
@@ -158,7 +158,7 @@
           <i class="fas fa-times-circle" onclick="cross()"></i>
         </div>
 
-        <text id="heading">Create A New Project</text>
+        <text id="heading">Edit Project</text>
         <div class="box">
           <label>Project Name</label>
           <input id="project_name" type="text" placeholder="Project Neme" />
@@ -194,15 +194,30 @@
             <option value="-135,528700,63.607907">Yukon</option>
           </select>
         </div>
-        <button id="btn" onclick="CREATE()">Create</button>
+        <button id="btn" onclick="CREATE()">Update</button>
       </div>
     </div>
   </body>
   <script>
+    var userId = localStorage.getItem("user-id");
     var projectName = document.querySelector("#project_name");
-    var baseMap = document.getElementById("select");
-    var state = document.getElementById("select2");
+    var baseMap = document.querySelector("#select");
+    var state = document.querySelector("#select2");
     var currentMail = localStorage.getItem("user-mail");
+    const localData = JSON.parse(localStorage.getItem("obj"));
+    console.log(localData);
+
+    function datas() {
+      localData.map((info) => {
+        localStorage.setItem("project_id", info._id);
+        (projectName.value = info.projectName),
+          (baseMap.value = info.baseMap),
+          (state.value = info.state);
+      });
+    }
+
+    datas();
+
     function cross() {
       setTimeout(() => {
         document.getElementById("project").style.display = "none";
@@ -220,27 +235,18 @@
         baseMap.value != "" &&
         state.value != ""
       ) {
-        console.log(projectName.value);
-        console.log(baseMap.value);
-        console.log(state.value);
-        console.log(currentMail);
-        GET_userMail = "http://localhost:8080/api/user/";
-        POST_newProject = "http://localhost:8080/api/project/send";
-        axios.get(GET_userMail + currentMail).then((res) => {
-          var data = {
-            userId: res.data._id,
-            projectName: projectName.value,
-            baseMap: baseMap.value,
-            state: state.value,
-          };
-          axios.post(POST_newProject, data).then((res) => {
-            try {
-              return res.data;
-            } catch (error) {
-              console.log(error);
-            }
-          });
+        var data = {
+          userId: userId,
+          projectName: projectName.value,
+          baseMap: baseMap.value,
+          state: state.value,
+        };
+
+        var project_id = localStorage.getItem("project_id");
+        Edit_project = "http://localhost:8080/api/project/edit/";
+        axios.put(Edit_project + project_id, data).then((res) => {
           window.location.href = "../dashboard.html";
+          console.log(res.data);
         });
       } else {
         alert("fill the values");

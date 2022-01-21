@@ -7,12 +7,19 @@
     <title>Document</title>
   </head>
   <body>
-    <button value="rithi" onclick="save(this.value)">rithi</button>
-    <data value="rithi" onclick="save(this.value)">rithi</data>
+    <select id="slt">
+      <option value="1">11</option>
+      <option value="2">22</option>
+      <option value="3">33</option>
+      <option value="4">44</option>
+      <option value="5">55</option>
+    </select>
+    <button onclick="save()">click</button>
   </body>
   <script>
-    function save(x) {
-      alert(x);
+    function save() {
+      var x = document.getElementById("slt");
+      x.innerHTML = 33;
     }
   </script>
 </html>

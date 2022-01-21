@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
       };
       try {
         const { data: res } = await axios.post(
-          "http://localhost:8080/api/users",
+          "http://localhost:8080/api/newUser",
           data
         );
         localStorage.setItem("token", res.data);
