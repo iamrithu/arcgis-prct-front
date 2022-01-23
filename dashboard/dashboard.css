@@ -112,7 +112,7 @@ body {
   overflow-x: hidden;
 }
 .active {
-  border-left: 3px solid rgb(90, 191, 238);
+  border-left: 3px solid rgb(233, 39, 168);
 }
 
 .nav-list {
@@ -143,7 +143,7 @@ body {
 .nav-list:hover .nav-name,
 .menu:hover,
 .nav-setting-icon:hover {
-  color: rgb(90, 191, 238);
+  color: rgb(233, 39, 168);
 }
 
 .nav-list:hover {

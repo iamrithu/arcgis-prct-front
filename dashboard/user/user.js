@@ -37,9 +37,7 @@ function projects() {
         .join(" ");
   });
 }
-function dop(x) {
-  alert(x);
-}
+
 projects();
 function Edit(x) {
   axios.get("http://localhost:8080/api/project/details/" + x).then((res) => {
@@ -52,6 +50,21 @@ function Edit(x) {
 }
 
 function del(x) {
+  axios
+    .get("http://localhost:8080/api/geolocation/project/" + x)
+    .then((res) => {
+      res.data.map((info) => {
+        axios
+          .delete(
+            "http://localhost:8080/api/geolocation/delete/all/" +
+              info.project_id
+          )
+          .then((res) => {
+            console.log("deleted");
+            projects();
+          });
+      });
+    });
   axios.delete("http://localhost:8080/api/project/delete/" + x).then((res) => {
     console.log("deleted");
     projects();
@@ -60,6 +73,11 @@ function del(x) {
 function edit(x) {
   Edit(x);
 }
-function Secd(x) {
-  alert("hi");
+function Send(x) {
+  axios.get("http://localhost:8080/api/project/details/" + x).then((res) => {
+    console.log(res.data);
+    localStorage.setItem("map", JSON.stringify(res.data));
+
+    window.open("../../map/index.html", "_block");
+  });
 }

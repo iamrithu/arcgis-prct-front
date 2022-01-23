@@ -188,10 +188,10 @@
             <option value="-61.656549,45.737405">Nova Scotia</option>
             <option value="-88.487826,69.579383">Nunavut</option>
             <option value="-84.668026,50.882778">Ontario</option>
-            <option value="-63.386057,46,496338">Prince Edward Island</option>
+            <option value="-63.386057,46.496338">Prince Edward Island</option>
             <option value="-71.346329,46.844932">Quebec</option>
             <option value="-106.430598,54.825253">Saskatchewan</option>
-            <option value="-135,528700,63.607907">Yukon</option>
+            <option value="-135.528700,63.607907">Yukon</option>
           </select>
         </div>
         <button id="btn" onclick="CREATE()">Update</button>
@@ -246,7 +246,6 @@
         Edit_project = "http://localhost:8080/api/project/edit/";
         axios.put(Edit_project + project_id, data).then((res) => {
           window.location.href = "../dashboard.html";
-          console.log(res.data);
         });
       } else {
         alert("fill the values");

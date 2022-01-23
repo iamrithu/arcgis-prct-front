@@ -40,6 +40,10 @@ document.addEventListener("DOMContentLoaded", () => {
           data
         );
         localStorage.setItem("token", res.data);
+        loginForm.classList.remove("form--hidden");
+        createAccountForm.classList.add("form--hidden");
+        Email.value = eMail.value;
+        Password.value = password.value;
         console.log(res.message);
       } catch (error) {
         if (

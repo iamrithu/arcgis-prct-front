@@ -34,8 +34,9 @@ td {
   font-size: 14px;
   color: rgb(63, 187, 238);
 }
+
 tr:hover td {
-  background-color: rgba(196, 192, 189, 0.158);
+  background-color: rgba(112, 110, 108, 0.158);
   color: rgb(6, 154, 240);
 }
 tr:hover button {
@@ -50,7 +51,7 @@ h3 {
   color: rgb(63, 187, 238);
 }
 #trash {
-  color: rgb(241, 165, 211);
+  color: rgb(226, 27, 27);
   font-size: 16px;
   margin-right: 5px;
   font-weight: lighter;
@@ -58,14 +59,14 @@ h3 {
   cursor: pointer;
 }
 #edit {
-  color: rgb(146, 247, 200);
+  color: rgb(45, 78, 226);
   font-size: 16px;
   font-weight: lighter;
   margin-right: 1px;
   cursor: pointer;
 }
 #move {
-  color: rgb(139, 174, 226);
+  color: rgb(228, 123, 62);
   font-size: 15px;
 
   margin-right: 5px;
