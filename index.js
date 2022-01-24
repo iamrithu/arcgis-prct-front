@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
           "https://map-arcgis.herokuapp.com/api/auth",
           data
         );
-        console.log(res.data);
+        console.log(res.data.token);
         value = true;
         window.location.href = "./dashboard/dashboard.html";
       } catch (error) {
@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
           setInterval(() => {
             document.getElementById("message").innerText = "";
           }, 2000);
-          console.log(error.response.data.message);
+          console.log(error.response.data.token);
         }
       }
       if (value === true) {
