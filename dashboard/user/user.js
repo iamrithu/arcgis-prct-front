@@ -3,21 +3,23 @@ var projectName = document.getElementById("project_name");
 var baseMap = document.getElementById("select");
 
 function projects() {
-  axios.get("http://localhost:8080/api/project/" + userId).then((res) => {
-    var data = res.data;
+  axios
+    .get("https://map-arcgis.herokuapp.comapi/project/" + userId)
+    .then((res) => {
+      var data = res.data;
 
-    document.getElementById("table").innerHTML =
-      `<tr>
+      document.getElementById("table").innerHTML =
+        `<tr>
   <th style="width: 25%">Title</th>
   <th style="width: 25%">Base map</th>
   <th style="width: 25%">Location</th>
   <th style="width: 25%">Action</th>
 </tr>` +
-      data
-        .map((info) => {
-          localStorage.setItem("obj", JSON.stringify(info));
+        data
+          .map((info) => {
+            localStorage.setItem("obj", JSON.stringify(info));
 
-          return ` <tr>
+            return ` <tr>
     <td>${info.projectName}</td>
     <td>${info.baseMap}</td>
     <td>${info.state}</td>
@@ -33,30 +35,32 @@ function projects() {
       </button>
     </td>
     </tr>`;
-        })
-        .join(" ");
-  });
+          })
+          .join(" ");
+    });
 }
 
 projects();
 function Edit(x) {
-  axios.get("http://localhost:8080/api/project/details/" + x).then((res) => {
-    localStorage.setItem("obj", JSON.stringify(res.data));
-    var data = JSON.parse(localStorage.getItem("obj"));
-    console.log(data);
-    // window.open("", "_self").close();
-    window.open("./editProject.html", "_top");
-  });
+  axios
+    .get("https://map-arcgis.herokuapp.com/api/project/details/" + x)
+    .then((res) => {
+      localStorage.setItem("obj", JSON.stringify(res.data));
+      var data = JSON.parse(localStorage.getItem("obj"));
+      console.log(data);
+      // window.open("", "_self").close();
+      window.open("./editProject.html", "_top");
+    });
 }
 
 function del(x) {
   axios
-    .get("http://localhost:8080/api/geolocation/project/" + x)
+    .get("https://map-arcgis.herokuapp.com/api/geolocation/project/" + x)
     .then((res) => {
       res.data.map((info) => {
         axios
           .delete(
-            "http://localhost:8080/api/geolocation/delete/all/" +
+            "https://map-arcgis.herokuapp.com/api/geolocation/delete/all/" +
               info.project_id
           )
           .then((res) => {
@@ -65,19 +69,23 @@ function del(x) {
           });
       });
     });
-  axios.delete("http://localhost:8080/api/project/delete/" + x).then((res) => {
-    console.log("deleted");
-    projects();
-  });
+  axios
+    .delete("https://map-arcgis.herokuapp.com/api/project/delete/" + x)
+    .then((res) => {
+      console.log("deleted");
+      projects();
+    });
 }
 function edit(x) {
   Edit(x);
 }
 function Send(x) {
-  axios.get("http://localhost:8080/api/project/details/" + x).then((res) => {
-    console.log(res.data);
-    localStorage.setItem("map", JSON.stringify(res.data));
+  axios
+    .get("https://map-arcgis.herokuapp.com/api/project/details/" + x)
+    .then((res) => {
+      console.log(res.data);
+      localStorage.setItem("map", JSON.stringify(res.data));
 
-    window.open("../../map/index.html", "_block");
-  });
+      window.open("../../map/index.html", "_block");
+    });
 }
