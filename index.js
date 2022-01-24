@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
       };
       try {
         const { data: res } = await axios.post(
-          "http://localhost:8080/api/newUser",
+          "https://map-arcgis.herokuapp.com/api/newUser",
           data
         );
         localStorage.setItem("token", res.data);
@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
       };
       try {
         const { data: res } = await axios.post(
-          "http://localhost:8080/api/auth",
+          "https://map-arcgis.herokuapp.com/api/auth",
           data
         );
         value = true;
