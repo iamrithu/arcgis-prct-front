@@ -9,8 +9,690 @@ var project = JSON.parse(localStorage.getItem("map"));
 //   return console.log(info.baseMap);
 
 // });
+function importData(x) {
+  axios
+    .get("http://localhost:8080/api/geolocation/project/" + x)
+    .then((res) => {
+      document.getElementById("dataImport").innerHTML = res.data
+        .map((info) => {
+          return `  <button class="expt"  value="${info._id}"onclick="imptDATA(this.value)">${info._id}</button>
+      `;
+        })
+        .join(" ");
+    });
+}
+importData(project[0]._id);
+function imptDATA(e) {
+  axios.get("http://localhost:8080/api/geolocation/id/" + e).then((res) => {
+    var layer = res.data[0].data[0].features;
 
-console.log(project);
+    require([
+      "esri/config",
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/Graphic",
+      "esri/layers/GraphicsLayer",
+      "esri/layers/FeatureLayer",
+      "esri/widgets/LayerList",
+      "esri/widgets/BasemapGallery",
+      "esri/widgets/ScaleBar",
+      "esri/widgets/Sketch/SketchViewModel",
+      "esri/widgets/support/SnappingControls",
+      "esri/widgets/Search",
+      "esri/widgets/Locate",
+      "esri/widgets/Track",
+      "esri/widgets/Expand",
+      "esri/geometry/support/webMercatorUtils",
+      "esri/widgets/CoordinateConversion",
+      "esri/geometry/geometryEngine",
+      "esri/widgets/Print",
+    ], (
+      esriConfig,
+      Map,
+      MapView,
+      Graphic,
+      GraphicsLayer,
+      FeatureLayer,
+      LayerList,
+      BasemapGallery,
+      ScaleBar,
+      SketchViewModel,
+      SnappingControls,
+      Search,
+      Locate,
+      Track,
+      Expand,
+      webMercatorUtils,
+      CoordinateConversion,
+      geometryEngine,
+      Print
+    ) => {
+      esriConfig.apiKey =
+        "AAPK98c50a3510cc4cb9a07dc3116113843cqZssDSqHkgmBfOp_v5GIAETd4ggp7oleJJQPSyr9NmmTf-2GSs7swp9zS6T42ny7";
+      const graphicsLayer = new GraphicsLayer({ title: "graphicsLayer" });
+
+      const map = new Map({
+        basemap: bmap,
+        layers: [graphicsLayer],
+      });
+
+      const view = new MapView({
+        container: "viewDiv",
+        map: map,
+        zoom: 10,
+        center: [x, y],
+      });
+
+      const scalebar = new ScaleBar({
+        view: view,
+        unit: "metric",
+      });
+
+      view.ui.add(scalebar, "bottom-right");
+
+      const measurements = document.getElementById("measurements");
+      view.ui.add(measurements, "manual");
+
+      const basemapGallery = new BasemapGallery({
+        view: view,
+        container: document.getElementById("map"),
+        source: {
+          query: {
+            title: '"World Basemaps for Developers" AND owner:esri',
+          },
+        },
+      });
+      const search = new Search({
+        //Add Search widget
+        view: view,
+      });
+      const track = new Track({
+        view: view,
+        graphic: new Graphic({
+          symbol: {
+            type: "simple-marker",
+            size: "12px",
+            color: "red",
+            outline: {
+              color: "#efefef",
+              width: "1.5px",
+            },
+          },
+        }),
+        useHeadingEnabled: false,
+      });
+
+      view.ui.add(search, "top-left");
+      view.ui.add(track, "top-left");
+      // console.log(layer);
+      layer.map((e) => {
+        if (e.geometry.type === "Polygon") {
+          var geometry_value = e.geometry.coordinates;
+          Data.features.push({
+            type: "Feature",
+            geometry: {
+              type: "Polygon",
+              coordinates: geometry_value.map((info) => {
+                return info.map((e) => {
+                  return e;
+                });
+              }),
+            },
+            properties: {},
+          });
+          console.log(
+            geometry_value[0].map((e) => {
+              return e;
+            })
+          );
+          const polygon = {
+            type: "polygon",
+            // spatialReference: {
+            //   wkid: 4326,
+            // },
+            rings: [
+              geometry_value[0].map((e) => {
+                return e;
+              }),
+            ],
+          };
+
+          const simplePolygonSymbol = {
+            type: "simple-fill",
+            outline: {
+              color: [200, 0, 0],
+              width: 2,
+            },
+          };
+
+          const polygonGraphic = new Graphic({
+            geometry: polygon,
+            symbol: simplePolygonSymbol,
+          });
+
+          graphicsLayer.add(polygonGraphic);
+
+          view.when(() => {
+            sketchVM.update(polygonGraphic);
+            getArea(polygonGraphic.geometry);
+          });
+        } else if (e.geometry.type === "LineString") {
+          var geometry_value = e.geometry.coordinates;
+          console.log(geometry_value);
+
+          Data.features.push({
+            type: "Feature",
+            geometry: {
+              type: "LineString",
+              coordinates: geometry_value,
+            },
+            properties: {},
+          });
+          const polyline = {
+            type: "polyline",
+            paths: geometry_value, //Longitude, latitude
+          };
+          const simpleLineSymbol = {
+            type: "simple-line",
+            color: [226, 119, 40], // Orange
+            width: 2,
+          };
+
+          const polylineGraphic = new Graphic({
+            geometry: polyline,
+            symbol: simpleLineSymbol,
+          });
+          graphicsLayer.add(polylineGraphic);
+          view.when(() => {
+            sketchVM.update(polylineGraphic);
+            getArea(polylineGraphic.geometry);
+          });
+        } else {
+          var geometry_value = e.geometry.coordinates;
+          Data.features.push({
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [geometry_value[0], geometry_value[1]],
+            },
+            properties: {},
+          });
+          const point = {
+            //Create a point
+            type: "point",
+            longitude: geometry_value[0],
+            latitude: geometry_value[1],
+          };
+          const simpleMarkerSymbol = {
+            type: "simple-marker",
+            color: [226, 119, 40], // Orange
+            outline: {
+              color: [255, 255, 255], // White
+              width: 3,
+            },
+          };
+          const pointGraphic = new Graphic({
+            geometry: point,
+            symbol: simpleMarkerSymbol,
+          });
+          graphicsLayer.add(pointGraphic);
+          view.when(() => {
+            sketchVM.update(pointGraphic);
+            getArea(pointGraphic.geometry);
+          });
+        }
+      });
+
+      const sketchVM = new SketchViewModel({
+        view: view,
+        layer: graphicsLayer,
+        creationMode: "update",
+        updateOnGraphicClick: true,
+      });
+
+      sketchVM.on("update", (e) => {
+        const geometry = e.graphics[0].geometry;
+
+        if (e.state === "start") {
+          switchType(geometry);
+        }
+
+        if (e.state === "complete") {
+          // graphicsLayer.remove(graphicsLayer.graphics.getItemAt(0));
+          // measurements.innerHTML = null;
+        }
+
+        if (
+          e.toolEventInfo &&
+          (e.toolEventInfo.type === "scale-stop" ||
+            e.toolEventInfo.type === "reshape-stop" ||
+            e.toolEventInfo.type === "move-stop")
+        ) {
+          switchType(geometry);
+        }
+      });
+
+      function getArea(polygon) {
+        const geodesicArea = geometryEngine.geodesicArea(
+          polygon,
+          "square-kilometers"
+        );
+        const planarArea = geometryEngine.planarArea(
+          polygon,
+          "square-kilometers"
+        );
+
+        measurements.innerHTML =
+          "<b>Geodesic area</b>:  " +
+          geodesicArea.toFixed(2) +
+          " km\xB2" +
+          " |   <b>Planar area</b>: " +
+          planarArea.toFixed(2) +
+          "  km\xB2";
+      }
+
+      function getLength(line) {
+        const geodesicLength = geometryEngine.geodesicLength(
+          line,
+          "kilometers"
+        );
+        const planarLength = geometryEngine.planarLength(line, "kilometers");
+
+        measurements.innerHTML =
+          "<b>Geodesic length</b>:  " +
+          geodesicLength.toFixed(2) +
+          " km" +
+          " |   <b>Planar length</b>: " +
+          planarLength.toFixed(2) +
+          "  km";
+      }
+
+      function switchType(geom) {
+        // console.log(webMercatorUtils.webMercatorToGeographic(geom).toJSON());
+        switch (geom.type) {
+          case "polygon":
+            getArea(geom);
+
+            break;
+          case "polyline":
+            getLength(geom);
+            break;
+          default:
+            console.log("No value found");
+        }
+      }
+
+      // Add the calcite-panel for the styler to an Expand to hide/show the panel
+      const stylerExpand = new Expand({
+        view: view,
+        content: document.getElementById("propPanel"),
+        expanded: false,
+        expandIconClass: "esri-icon-edit",
+        expandTooltip: "Open Styler",
+      });
+
+      // Add SnappingControls to handle snapping
+      const snappingControls = new SnappingControls({
+        view: view,
+
+        // Sets the widget to use the SketchViewModel's SnappingOptions
+        snappingOptions: sketchVM.snappingOptions,
+      });
+
+      // Add the SnappingControls to an Expand widget to hide/show the widget
+      const snappingExpand = new Expand({
+        view: view,
+        // container: document.getElementById("snap"),
+        content: snappingControls,
+        expanded: false,
+        expandIconClass: "esri-icon-settings2",
+        expandTooltip: "Snapping Controls",
+      });
+
+      view.when(() => {
+        const print = new Print({
+          view: view,
+          // specify your own print service
+          printServiceUrl:
+            "https://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task",
+          container: "export",
+        });
+        // Configure the UI to use the default property values from our SketchViewModel
+        setDefaultCreateOptions();
+        setDefaultUpdateOptions();
+        setDefaultPointSymbol();
+        setDefaultPolylineSymbol();
+        setDefaultPolygonSymbol();
+      });
+
+      view.ui.add(stylerExpand, "bottom-right");
+      view.ui.add(snappingExpand, "top-left");
+      // Add the calcite panel
+      // Add the Expand with SnappingControls widget
+      // view.ui.add(shortcutKeysExpand, "top-left");
+
+      // Connecting the calcite actions with their corresponding SketchViewModel tools
+      const pointBtn = document.getElementById("pointBtn");
+      const polylineBtn = document.getElementById("polylineBtn");
+      const polygonBtn = document.getElementById("polygonBtn");
+      const circleBtn = document.getElementById("circleBtn");
+      const rectangleBtn = document.getElementById("rectangleBtn");
+      const clearBtn = document.getElementById("clearBtn");
+      const selectBtn = document.getElementById("selectBtn");
+
+      pointBtn.style.position = "absolute";
+      pointBtn.style.zIndex = "10";
+
+      pointBtn.style.top = "0%";
+
+      sketchVM.on("create", function (event) {
+        if (event.state === "complete") {
+          var geom = event.graphic.geometry;
+          var value = webMercatorUtils.webMercatorToGeographic(geom).toJSON();
+
+          switch (geom.type) {
+            case "polygon":
+              console.log("polygon");
+
+              Data.features.push({
+                type: "Feature",
+                geometry: {
+                  type: "Polygon",
+
+                  coordinates: value.rings.map((info) => {
+                    return info.map((e) => {
+                      return e;
+                    });
+                  }),
+                },
+                properties: {},
+              });
+              console.log(Data);
+              break;
+            case "polyline":
+              console.log("polyline");
+              Data.features.push({
+                type: "Feature",
+                geometry: {
+                  type: "LineString",
+                  coordinates: value.paths[0].map((info) => {
+                    return info.map((e) => {
+                      return e;
+                    });
+                  }),
+                },
+                properties: {},
+              });
+              console.log(Data);
+              break;
+            case "point":
+              console.log("point");
+              Data.features.push({
+                type: "Feature",
+                geometry: {
+                  type: "Point",
+                  coordinates: [value.x, value.y],
+                },
+                properties: {},
+              });
+              console.log(Data);
+              break;
+            default:
+              console.log("No value found");
+          }
+        } else {
+        }
+      });
+
+      pointBtn.onclick = (e) => {
+        sketchVM.create("point");
+      };
+      polylineBtn.onclick = () => {
+        sketchVM.create("polyline");
+      };
+      polygonBtn.onclick = () => {
+        sketchVM.create("polygon");
+      };
+      circleBtn.onclick = () => {
+        sketchVM.create("circle");
+      };
+      rectangleBtn.onclick = () => {
+        sketchVM.create("rectangle");
+      };
+      clearBtn.onclick = () => {
+        sketchVM.layer.removeAll();
+      };
+      selectBtn.onclick = () => {
+        sketchVM.cancel();
+      };
+
+      // Calcite UI logic
+      // Auto-populate UI with default SketchViewModel properties set.
+      // If no default values are set, UI will be set accordingly.
+      function setDefaultCreateOptions() {
+        const options = sketchVM.defaultCreateOptions;
+        const modeSelect = document.getElementById("mode-select");
+
+        // set default mode in the select element if defined
+        if (options?.mode) {
+          setDefaultOption(modeSelect, options.mode);
+        }
+
+        // handles mode select changes
+        modeSelect.addEventListener("calciteSelectChange", () => {
+          sketchVM.defaultCreateOptions["mode"] =
+            modeSelect.selectedOption.value;
+        });
+      }
+
+      function setDefaultUpdateOptions() {
+        const options = sketchVM.defaultUpdateOptions;
+        const rotationSwitch = document.getElementById("rotationSwitch");
+        const scaleSwitch = document.getElementById("scaleSwitch");
+        const multipleSelectionSwitch = document.getElementById(
+          "multipleSelectionSwitch"
+        );
+        const aspectRatioSwitch = document.getElementById("aspectRatioSwitch");
+
+        // set the UI elements to the default property values
+        rotationSwitch.switched = options.enableRotation;
+        scaleSwitch.switched = options.enableScaling;
+        multipleSelectionSwitch.switched = options.multipleSelectionEnabled;
+        aspectRatioSwitch.switched = options.preserveAspectRatio;
+
+        // event listeners for UI interactions
+        rotationSwitch.addEventListener("calciteSwitchChange", (evt) => {
+          sketchVM.defaultUpdateOptions.enableRotation = evt.target.switched;
+        });
+        scaleSwitch.addEventListener("calciteSwitchChange", (evt) => {
+          sketchVM.defaultUpdateOptions.enableScaling = evt.target.switched;
+        });
+        multipleSelectionSwitch.addEventListener(
+          "calciteSwitchChange",
+          (evt) => {
+            sketchVM.defaultUpdateOptions.multipleSelectionEnabled =
+              evt.target.switched;
+          }
+        );
+        aspectRatioSwitch.addEventListener("calciteSwitchChange", (evt) => {
+          sketchVM.defaultUpdateOptions.preserveAspectRatio =
+            evt.target.switched;
+        });
+      }
+
+      function setDefaultPointSymbol() {
+        const pointSymbol = sketchVM.pointSymbol;
+        const pointStyleSelect = document.getElementById("point-style-select");
+        const pointSymbolOutlineBtn =
+          document.getElementById("point-outline-btn");
+        const pointSizeInput = document.getElementById("point-size-input");
+        const pointXOffsetInput = document.getElementById(
+          "point-xoffset-input"
+        );
+        const pointYOffsetInput = document.getElementById(
+          "point-yoffset-input"
+        );
+        const pointAngleInput = document.getElementById("point-angle-input");
+        const pointColorInput = document.getElementById("point-color-input");
+        const slsWidthInput = document.getElementById("point-sls-width-input");
+        const slsColorInput = document.getElementById("point-sls-color-input");
+
+        pointSizeInput.value = pointSymbol.size;
+        pointXOffsetInput.value = pointSymbol.xoffset;
+        pointYOffsetInput.value = pointSymbol.yoffset;
+        pointAngleInput.value = pointSymbol.angle;
+        slsWidthInput.value = pointSymbol.outline.width;
+
+        // set default style in the select element
+        setDefaultOption(pointStyleSelect, pointSymbol.style);
+
+        pointSizeInput.addEventListener("calciteInputInput", (evt) => {
+          pointSymbol.size = parseInt(evt.target.value);
+        });
+        pointXOffsetInput.addEventListener("calciteInputInput", (evt) => {
+          pointSymbol.xoffset = parseInt(evt.target.value);
+        });
+        pointYOffsetInput.addEventListener("calciteInputInput", (evt) => {
+          pointSymbol.yoffset = parseInt(evt.target.value);
+        });
+        pointAngleInput.addEventListener("calciteInputInput", (evt) => {
+          pointSymbol.angle = parseInt(evt.target.value);
+        });
+        pointStyleSelect.addEventListener("calciteSelectChange", () => {
+          pointSymbol.style = pointStyleSelect.selectedOption.value;
+        });
+        pointColorInput.addEventListener("calciteInputInput", (evt) => {
+          pointSymbol.color = evt.target.value;
+        });
+        pointSymbolOutlineBtn.onclick = () => {
+          openModal("point-outline-modal");
+        };
+        // point outline modal event listeners
+        slsWidthInput.addEventListener("calciteInputInput", (evt) => {
+          pointSymbol.outline.width = parseInt(evt.target.value);
+        });
+        slsColorInput.addEventListener("calciteInputInput", (evt) => {
+          pointSymbol.outline.color = evt.target.value;
+        });
+      }
+
+      function setDefaultPolylineSymbol() {
+        const lineSymbol = sketchVM.polylineSymbol;
+        const lineStyleSelect = document.getElementById("line-style-select");
+        const lineWidthInput = document.getElementById("line-width-input");
+        const lineColorInput = document.getElementById("line-color-input");
+
+        lineWidthInput.value = lineSymbol.width;
+
+        // set default style in the select element
+        setDefaultOption(lineStyleSelect, lineSymbol.style);
+
+        lineStyleSelect.addEventListener("calciteSelectChange", () => {
+          lineSymbol.style = lineStyleSelect.selectedOption.value;
+        });
+        lineWidthInput.addEventListener("calciteInputInput", (evt) => {
+          lineSymbol.width = parseInt(evt.target.value);
+        });
+        lineColorInput.addEventListener("calciteInputInput", (evt) => {
+          lineSymbol.color = evt.target.value;
+        });
+      }
+
+      function setDefaultPolygonSymbol() {
+        const polygonSymbol = sketchVM.polygonSymbol;
+        const polygonStyleSelect = document.getElementById(
+          "polygon-style-select"
+        );
+        const polygonSymbolOutlineBtn = document.getElementById(
+          "polygon-outline-btn"
+        );
+        const polygonColorInput = document.getElementById(
+          "polygon-color-input"
+        );
+        const slsStyleSelect = document.getElementById(
+          "polygon-sls-style-select"
+        );
+        const slsWidthInput = document.getElementById(
+          "polygon-sls-width-input"
+        );
+        const slsColorInput = document.getElementById(
+          "polygon-sls-color-input"
+        );
+
+        slsWidthInput.value = polygonSymbol.outline.width;
+
+        // set default style in the select element
+        setDefaultOption(polygonStyleSelect, polygonSymbol.style);
+        setDefaultOption(slsStyleSelect, polygonSymbol.outline.style);
+
+        polygonStyleSelect.addEventListener("calciteSelectChange", () => {
+          polygonSymbol.style = polygonStyleSelect.selectedOption.value;
+        });
+        polygonColorInput.addEventListener("calciteInputInput", (evt) => {
+          polygonSymbol.color = evt.target.value;
+        });
+        polygonSymbolOutlineBtn.onclick = () => {
+          openModal("polygon-outline-modal");
+        };
+        // polygon outline modal event listeners
+        slsStyleSelect.addEventListener("calciteSelectChange", () => {
+          polygonSymbol.outline.style = slsStyleSelect.selectedOption.value;
+        });
+        slsWidthInput.addEventListener("calciteInputInput", (evt) => {
+          polygonSymbol.outline.width = parseInt(evt.target.value);
+        });
+        slsColorInput.addEventListener("calciteInputInput", (evt) => {
+          polygonSymbol.outline.color = evt.target.value;
+        });
+      }
+
+      // function to auto-populate calcite select components
+      function setDefaultOption(selectElement, value) {
+        for (let i = 0; i < selectElement.children.length; i++) {
+          let option = selectElement.children[i];
+          if (option.value === value) {
+            option.selected = true;
+          }
+        }
+      }
+
+      // displays the appropriate modals
+      function openModal(id) {
+        document.getElementById(id).active = true;
+      }
+
+      var coordsWidget = document.createElement("div");
+      coordsWidget.id = "coordsWidget";
+      coordsWidget.className = "esri-widget esri-component";
+      coordsWidget.style.padding = "9px 15px 5px";
+
+      view.ui.add(coordsWidget, "bottom-right");
+
+      view.watch("stationary", function (isStationary) {
+        showCoordinates(view.center);
+      });
+      function showCoordinates(pt) {
+        //*** UPDATE ***//
+        var coords =
+          "  Scale 1:" +
+          Math.round(view.scale * 1) / 1 +
+          " | Zoom " +
+          view.zoom;
+        coordsWidget.innerHTML = coords;
+      }
+      view.on("pointer-move", function (evt) {
+        showCoordinates(view.toMap({ x: evt.x, y: evt.y }));
+      });
+      var coordinateConversionWidget = new CoordinateConversion({
+        view: view,
+      });
+
+      view.ui.add(coordinateConversionWidget, "bottom-left");
+    });
+  });
+}
+
+// console.log(project);
 if (project === null) {
   window.close("./index.html");
 }
@@ -49,6 +731,7 @@ function file() {
   document.getElementById("cross").style.display = "flex";
 }
 function expt() {
+  importData();
   fetch("http://localhost:8080/api/geolocation", {
     headers: {
       Accept: "application/json",

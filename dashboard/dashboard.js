@@ -27,10 +27,7 @@ var state = document.querySelector("#select2");
 var useName = document.getElementById("userName");
 
 axios
-  .get(
-    "https://map-arcgis.herokuapp.com/api/user/" +
-      localStorage.getItem("user-mail")
-  )
+  .get("http://localhost:8080/api/user/" + localStorage.getItem("user-mail"))
   .then((res) => {
     var data = {
       firstName: res.data.firstName,

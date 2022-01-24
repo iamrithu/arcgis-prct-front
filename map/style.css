@@ -295,6 +295,22 @@ p {
   right: 1%;
   display: inline-block;
 }
+.dropdown2:hover #dataImport {
+  display: inline-block;
+}
+#dataImport {
+  position: absolute;
+
+  display: none;
+  top: 0px;
+  right: 0px;
+}
+.dropdown3 {
+  position: absolute;
+  top: 33%;
+  right: 1%;
+  display: inline-block;
+}
 
 .dropdown-content {
   display: none;
@@ -350,15 +366,18 @@ h3 {
   cursor: pointer;
 }
 .expt {
-  padding: 8px 4px;
+  padding: 6px 4px;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
+  position: relative;
   outline: none;
   border: none;
+  right: 70px;
 }
 .expt:hover {
-  background-color: rgba(18, 120, 193, 0.349);
+  background-color: rgb(18, 121, 193);
+  color: rgb(245, 243, 243);
 }
 button {
   border-radius: 2px;
