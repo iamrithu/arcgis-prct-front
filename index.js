@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
           setInterval(() => {
             document.getElementById("message").innerText = "";
           }, 2000);
-          console.log(error.response.data.token);
+          console.log(error.response.data.message);
         }
       }
       if (value === true) {
