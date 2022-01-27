@@ -15,7 +15,7 @@ function importData(x) {
     .then((res) => {
       document.getElementById("dataImport").innerHTML = res.data
         .map((info) => {
-          return `  <button class="expt"  value="${info._id}"onclick="imptDATA(this.value)">${info._id}</button>
+          return `  <button class="expt"  value="${info._id}"onclick="imptDATA(this.value)">${info.layerName}</button>
       `;
         })
         .join(" ");
@@ -140,11 +140,11 @@ function imptDATA(e) {
             },
             properties: {},
           });
-          console.log(
-            geometry_value[0].map((e) => {
-              return e;
-            })
-          );
+          // console.log(
+          //   geometry_value[0].map((e) => {
+          //     return e;
+          //   })
+          // );
           const polygon = {
             type: "polygon",
             // spatialReference: {
@@ -252,7 +252,11 @@ function imptDATA(e) {
 
       sketchVM.on("update", (e) => {
         const geometry = e.graphics[0].geometry;
-
+        // console.log(
+        //   geometry_value[0].map((e) => {
+        //     return e;
+        //   })
+        // );
         if (e.state === "start") {
           switchType(geometry);
         }
@@ -731,26 +735,36 @@ function file() {
   document.getElementById("cross").style.display = "flex";
 }
 function expt() {
-  importData();
-  fetch("http://localhost:8080/api/geolocation", {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-    body: JSON.stringify({
-      project_id: projectId,
-      user_id: userId,
-      project_name: projectName,
-      data: [Data],
-    }),
-  })
-    .then(function (res) {
-      console.log(res);
-    })
-    .catch(function (res) {
-      console.log(res);
-    });
+  if (Data.features.length > 0) {
+    var name = prompt("Enter The Name");
+
+    if (name) {
+      fetch("http://localhost:8080/api/geolocation", {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          project_id: projectId,
+          layerName: name,
+          user_id: userId,
+          project_name: projectName,
+          data: [Data],
+        }),
+      })
+        .then(function (res) {
+          importData(project[0]._id);
+        })
+        .catch(function (res) {
+          console.log(res);
+        });
+    } else {
+      alert("Give any name for the layer");
+    }
+  } else {
+    alert("Draw a location ");
+  }
 }
 
 function one() {
@@ -774,7 +788,7 @@ function one() {
       alert("Thank you");
     }
   } else {
-    alert("nope");
+    alert("There is no location");
   }
 }
 require([
@@ -1306,20 +1320,20 @@ function Import() {
   }
 }
 
-function sample() {
-  axios.get(" https://arc-map.herokuapp.com/geolocation").then((res) => {
-    document.getElementById("selectmap").innerHTML =
-      "<select id='select2'  ondblclick='del(this.value)' onfocus='this.size=10' onblur='this.size=1;' onchange='choose(this.value)'> <option>  choose your shapes</option>" +
-      res.data
-        .map((e) => {
-          return (
-            "<option name=" + e.shapeName + ">" + e.shapeName + "<option> "
-          );
-        })
-        .join("------------------------") +
-      "</select>";
-  });
-}
+// function sample() {
+//   axios.get(" https://arc-map.herokuapp.com/geolocation").then((res) => {
+//     document.getElementById("selectmap").innerHTML =
+//       "<select id='select2'  ondblclick='del(this.value)' onfocus='this.size=10' onblur='this.size=1;' onchange='choose(this.value)'> <option>  choose your shapes</option>" +
+//       res.data
+//         .map((e) => {
+//           return (
+//             "<option name=" + e.shapeName + ">" + e.shapeName + "<option> "
+//           );
+//         })
+//         .join("------------------------") +
+//       "</select>";
+//   });
+// }
 function choose(x) {
   require([
     "esri/config",
