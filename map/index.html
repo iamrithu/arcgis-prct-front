@@ -5,7 +5,7 @@
       name="viewport"
       content="initial-scale=1,maximum-scale=1,user-scalable=no"
     />
-    <title>ArcGIS API for JavaScript 4.22</title>
+    <title>Map</title>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"
       integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw=="
@@ -35,8 +35,6 @@
     />
     <link rel="stylesheet" href="./style.css" />
     <script src="https://js.arcgis.com/4.22/"></script>
-
-    <script src="./index.js"></script>
   </head>
   <body>
     <div id="viewDiv"></div>
@@ -45,6 +43,7 @@
     <div id="layer"></div>
     <div id="selectmap"></div>
     <div id="snap"></div>
+    <div class="container" id="container"></div>
 
     <div id="cog-box2" onclick="reload()" class="box">
       <i class="fas fa-sync-alt" id="cog2"></i>
@@ -60,6 +59,7 @@
     </div>
     <div id="export"></div>
     <div id="cross" onclick="cross()">X</div>
+    <button id="layer-select" onclick="Layer()">Layer</button>
     <div class="dropdown">
       <button class="dropbtn">Export</button>
       <div class="dropdown-content">
@@ -73,6 +73,9 @@
     </div>
     <div class="dropdown3">
       <button class="dropbtn" onclick="expt()">Save</button>
+    </div>
+    <div class="dropdown4">
+      <input type="file" id="file" />
     </div>
     <calcite-panel heading="SketchViewModel Styler" id="propPanel">
       <calcite-block id="headingBlock">
@@ -489,4 +492,6 @@
       </div>
     </calcite-modal>
   </body>
+
+  <script src="./index.js"></script>
 </html>
